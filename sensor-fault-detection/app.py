@@ -1,8 +1,6 @@
-from typing import Optional
-import aiofiles
-from fastapi import FastAPI, Request, UploadFile, File, HTTPException
+
+from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 from starlette.responses import FileResponse
 import os, sys
 
@@ -66,7 +64,7 @@ def predict(file: UploadFile = File(...)):
         return FileResponse(file_location, media_type='application/octet-stream',filename=file_name)
 
     except Exception as e:
-        raise (e,sys)
+        raise CustomException(e,sys)
 
 if __name__ == "__main__":
     app_run(app, host="0.0.0.0", port=8080)

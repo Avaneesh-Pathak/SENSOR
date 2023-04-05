@@ -13,8 +13,10 @@ from dataclasses import dataclass
         
 @dataclass
 class PredictionFileDetail:
-    prediction_file_path:str = "predictions/predicted_file.csv"
+    prediction_output_dirname: str = "predictions"
     prediction_file_name:str =  "predicted_file.csv"
+    prediction_file_path:str = os.path.join(prediction_output_dirname,prediction_file_name)
+
 
 
 class PredictionPipeline:
@@ -91,8 +93,13 @@ class PredictionPipeline:
             input_dataframe: pd.DataFrame = pd.read_csv(input_dataframe_path)
             predictions = self.predict(input_dataframe)
             input_dataframe[prediction_column_name] = [pred for pred in predictions]
+            target_column_mapping = {0:'neg', 1:'pos'}
 
-            input_dataframe.to_csv(self.prediction_file_detail.prediction_file_path)
+            input_dataframe[prediction_column_name] = input_dataframe[prediction_column_name].map(target_column_mapping)
+            
+            os.makedirs( self.prediction_file_detail.prediction_output_dirname, exist_ok= True)
+            input_dataframe.to_csv(self.prediction_file_detail.prediction_file_path, index= False)
+            logging.info("predictions completed. ")
 
 
 

@@ -133,4 +133,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-student/artifact
+artifacts
+prediction_artifacts
+predictions

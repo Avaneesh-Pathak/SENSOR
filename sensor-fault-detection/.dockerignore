@@ -1,7 +1,8 @@
 artifacts/
-catboost_info/
+prediction_artifacts/
+predictions/
 logs/
-notebook/
-venv/
+notebooks/
+env/
 LICENSE
 README.md

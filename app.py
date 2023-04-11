@@ -29,12 +29,6 @@ app.add_middleware(
 
 
 
-@app.get("/", tags=["authentication"])
-async def index(request: Request):
-    return templates.TemplateResponse(
-        "index.html", {"request": request, "context": "Rendering"}
-    )
-
 
 @app.get("/train")
 async def trainRouteClient():

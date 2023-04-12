@@ -218,7 +218,7 @@ Before you begin, you'll need:
 
 8. Launch the instance and save the private key for SSH access.
 
-## Installing Docker
+## Installing Docker in EC2 machine
 
 1. SSH into the EC2 instance using the private key.
 
@@ -228,15 +228,21 @@ Before you begin, you'll need:
 sudo yum update -y
 sudo yum install -y docker
 ```
-
-3. Start the Docker service and enable it to start on boot:
+3. Grant root access to docker
+```bash
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+```
+4. Start the Docker service and enable it to start on boot:
 ```bash
 sudo service docker start
 sudo chkconfig docker on
+
 ```
 
 
-## Installing AWS CLI
+## Installing AWS CLI in EC2 machine
 
 1. SSH into the EC2 instance using the private key.
 
@@ -256,5 +262,41 @@ aws --version
 
 You're now ready to use the EC2 instance with Docker and AWS CLI.
 
+4. Configure AWS cli
+
+```bash
+aws configure
+```
+    # Enter your AWS Access Key ID and Secret Access Key
+    # Enter your Default region name (e.g. ap-south-1)
+    # Enter your Default output format (e.g. json)
+
+Once you configure aws cli, setup the Ec2 as self-hosted runner on which our project is basically going to be deployed. 
+
+### Here are the steps to get the code required to add a self-hosted runner to your GitHub repository:
+
+- Go to your GitHub repository and click on the `Settings` tab.
+
+- On the left-hand side, click on `Actions` and then click on `Runners`.
+
+- Click on `New self-hosted runner` and choose a machine. For us we are going to use the **Linux** machine. Once you choose the linux machine, below that you will get a code snippet. That you have to copy and paste one by one in the EC2 machine console. Once you do that properly, you would see the name self-hosted available in your runners list in your github **repository > settings > Actions > Runners page**
+
+Follow the prompts to configure the runner. You'll be asked to provide a name for the runner, and to download a token to authenticate the runner with your repository.
+
+Once you've completed the configuration, you'll be presented with a code snippet that you need to run on your self-hosted runner instance. The code will look something like this. And now if you've reached till this part, you have successfully setup the EC2 machine. 
 
 
+## Create a ECR repo in aws 
+
+1. Open the `AWS Management Console` and navigate to the `Amazon ECR service`.
+2. Click the `Create repository` button.
+3. In the `Create repository` page, enter a name for your repository in the `Repository name` field.
+4. (Optional) Add tags to your repository in the `Tags` section.
+5. Click the `Create repository` button to create your ECR repository.
+
+copy the ECR repo url and add into github secrets.
+
+
+## Final deployment
+
+Now when you have successfully completed the steps above, push your code to your github repository and click on the `Actions` in your github repository. You can see a `workflow` running there. If you have done the previous steps just the way it was demonstrated, the project will be deployed.

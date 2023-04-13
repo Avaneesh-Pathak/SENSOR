@@ -1,61 +1,39 @@
-
-from fastapi import FastAPI, Request, UploadFile, File
-from fastapi.middleware.cors import CORSMiddleware
-from starlette.responses import FileResponse
-import os, sys
-
-from fastapi.responses import Response
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
-from uvicorn import run as app_run
+from flask import Flask, render_template, jsonify, request, send_file
 from src.exception import CustomException
-from src.logger import logging
+from src.logger import logging as lg
+import os,sys
 
-from src.pipeline.predict_pipeline import  PredictionPipeline
 from src.pipeline.train_pipeline import TrainPipeline
+from src.pipeline.predict_pipeline import PredictionPipeline
 
-app = FastAPI()
+app = Flask(__name__)
 
-origins = ["*"]
+@app.route("/")
+def home():
+    return jsonify("home")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-
-
-
-@app.get("/train")
-async def trainRouteClient():
+@app.route('/upload', methods=['POST', 'GET'])
+def upload():
+    
     try:
-        train_pipeline = TrainPipeline()
-
-        train_pipeline.run_pipeline()
-
-        return Response("Training successful !!")
-
-    except Exception as e:
-        return Response(f"Error Occurred! {e}")
 
 
+        if request.method == 'POST':
+            prediction_pipeline = PredictionPipeline(request)
+            prediction_file_detail = prediction_pipeline.run_pipeline()
 
-@app.post("/predict")
-def predict(file: UploadFile = File(...)):
-    try:
-        pred_pipeline = PredictionPipeline(file)
-        prediction_file = pred_pipeline.run_pipeline()
-        file_location = prediction_file.prediction_file_path
-        file_name = prediction_file.prediction_file_name
-        logging.info("prediction finished")
-        return FileResponse(file_location, media_type='application/octet-stream',filename=file_name)
+            lg.info("prediction completed. Downloading prediction file.")
+            return send_file(prediction_file_detail.prediction_file_path,
+                            download_name= prediction_file_detail.prediction_file_name,
+                            as_attachment= True)
 
+
+        else:
+            return render_template('upload_file.html')
     except Exception as e:
         raise CustomException(e,sys)
+    
+
 
 if __name__ == "__main__":
-    app_run(app, host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=5000, debug= True)

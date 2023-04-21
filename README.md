@@ -22,7 +22,7 @@ python app.py
 ```
 
 🔧 Built with
-- fastapi
+- flask
 - Python 3.8
 - Machine learning
 - Scikit learn

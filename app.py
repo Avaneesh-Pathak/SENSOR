@@ -19,6 +19,8 @@ def train_route():
         train_pipeline = TrainPipeline()
         train_pipeline.run_pipeline()
 
+        return "Training Completed."
+
     except Exception as e:
         raise CustomException(e,sys)
 

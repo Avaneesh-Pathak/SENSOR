@@ -6,6 +6,7 @@ from src.logger import logging
 from src.exception import CustomException
 import sys
 from flask import request
+from src.constant import *
 from src.utils import download_model, load_object
 
 from dataclasses import dataclass
@@ -58,7 +59,7 @@ class PredictionPipeline:
     def predict(self, features):
             try:
                 model_path = download_model(
-                    bucket_name="ineuron-test-bucket-123",
+                    bucket_name=AWS_S3_BUCKET_NAME,
                     bucket_file_name="model.pkl",
                     dest_file_name="model.pkl",
                 )

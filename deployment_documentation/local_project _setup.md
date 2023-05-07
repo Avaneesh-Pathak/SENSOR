@@ -80,7 +80,7 @@ To get the Python 3.8 client URL for MongoDB, follow these steps:
 
 1. Navigate to the S3 service in aws.
 2. Click on the "Create bucket" button on the S3 dashboard.
-3. In the "Create bucket" dialog, provide a unique name for your bucket. For our project, keep it `cement-strength` as we have mentioned this particular name for our project in our constant module. If you wanna give another name make sure you mention it inside the constant module.
+3. In the "Create bucket" dialog, provide a unique name for your bucket. For our project, keep it `sensor-deployment` as we have mentioned this particular name for our project in our constant module. If you wanna give another name make sure you mention it inside the constant module.
 4. Click on the "Create bucket" button to create your S3 bucket.
 
 

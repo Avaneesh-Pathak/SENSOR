@@ -5,7 +5,8 @@ from src.logger import logging
 
 from src.exception import CustomException
 import sys
-from fastapi import File
+from flask import request
+from src.constant import *
 from src.utils import download_model, load_object
 
 from dataclasses import dataclass
@@ -20,9 +21,9 @@ class PredictionFileDetail:
 
 
 class PredictionPipeline:
-    def __init__(self, file:File):
+    def __init__(self, request: request):
 
-        self.file = file 
+        self.request = request
         self.prediction_file_detail = PredictionFileDetail()
 
 
@@ -41,15 +42,14 @@ class PredictionPipeline:
         """
 
         try:
-            pred_file_input_dir = "prediction_artifacts/input_file.csv"
+            pred_file_input_dir = "prediction_artifacts"
             os.makedirs(pred_file_input_dir, exist_ok=True)
 
-            pred_file_path = os.path.join(pred_file_input_dir, self.file.filename)
+            input_csv_file = self.request.files['file']
+            pred_file_path = os.path.join(pred_file_input_dir, input_csv_file.filename)
             
-            with open(pred_file_path, 'wb') as f:
-                shutil.copyfileobj(self.file.file, f)
             
-            logging.info("Prediction input file saved")
+            input_csv_file.save(pred_file_path)
 
 
             return pred_file_path
@@ -59,7 +59,7 @@ class PredictionPipeline:
     def predict(self, features):
             try:
                 model_path = download_model(
-                    bucket_name="ineuron-test-bucket-123",
+                    bucket_name=AWS_S3_BUCKET_NAME,
                     bucket_file_name="model.pkl",
                     dest_file_name="model.pkl",
                 )

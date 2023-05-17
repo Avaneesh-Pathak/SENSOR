@@ -12,6 +12,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from xgboost import XGBClassifier
 
+from src.constant import *
 from src.exception import CustomException
 from src.logger import logging
 from src.utils import evaluate_models, load_object, save_object, upload_file
@@ -107,7 +108,7 @@ class ModelTrainer:
             upload_file(
                 from_filename=self.model_trainer_config.trained_model_file_path,
                 to_filename="model.pkl",
-                bucket_name="ineuron-test-bucket-123",
+                bucket_name=AWS_S3_BUCKET_NAME,
             )
 
             return r2_square

@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+from src.constant import *
 from src.exception import CustomException
 from src.logger import logging
 from src.utils import export_collection_as_dataframe
@@ -28,7 +29,7 @@ class DataIngestion:
 
         try:
             df: pd.DataFrame = export_collection_as_dataframe(
-                db_name="ineuron", collection_name="sensor"
+                db_name=MONGO_DATABASE_NAME, collection_name=MONGO_COLLECTION_NAME
             )
 
             logging.info("Exported collection as dataframe")

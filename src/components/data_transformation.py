@@ -61,7 +61,7 @@ class DataTransformation:
             preprocessor = self.get_data_transformer_object()
 
             target_column_name = "class"
-            target_column_mapping = {'neg': 0, 'pos': 1}
+            target_column_mapping = {'+1': 0, '-1': 1}
 
             #training dataframe
             input_feature_train_df = train_df.drop(columns=[target_column_name], axis=1)

@@ -15,11 +15,11 @@ from sklearn.model_selection import train_test_split
 from src.exception import CustomException
 
 
-def export_collection_as_dataframe(collection_name, db_name):
+def export_collection_as_dataframe(MONGO_COLLECTION_NAME, MONGO_DATABASE_NAME):
     try:
         mongo_client = MongoClient(os.getenv("MONGO_DB_URL"))
 
-        collection = mongo_client[db_name][collection_name]
+        collection = mongo_client[MONGO_DATABASE_NAME][MONGO_COLLECTION_NAME]
 
         df = pd.DataFrame(list(collection.find()))
 

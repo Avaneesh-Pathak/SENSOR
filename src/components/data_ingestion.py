@@ -28,8 +28,8 @@ class DataIngestion:
         logging.info("Entered initiate_data_ingestion method of DataIngestion class")
 
         try:
-            df: pd.DataFrame = export_collection_as_dataframe(
-                db_name=MONGO_DATABASE_NAME, collection_name=MONGO_COLLECTION_NAME
+            df: pd.DataFrame = export_collection_as_dataframe(MONGO_DATABASE_NAME=
+                'Avaneesh',MONGO_COLLECTION_NAME='waferfault'
             )
 
             logging.info("Exported collection as dataframe")
@@ -40,7 +40,7 @@ class DataIngestion:
 
             df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
 
-            train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
+            train_set, test_set = train_test_split(df, train_size=0.8, random_state=42)
 
             train_set.to_csv(
                 self.ingestion_config.train_data_path, index=False, header=True

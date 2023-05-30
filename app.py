@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return jsonify("home")
+    return "Welcome to My Application"
 
 
 @app.route("/train")
@@ -48,4 +48,4 @@ def upload():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug= True)
+    app.run(host="0.0.0.0", port=5000, debug= True) 
